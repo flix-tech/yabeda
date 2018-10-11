@@ -47,11 +47,15 @@ class SlackFormatter:
         }
 
     def __render_message(self, pipeline: models.Pipeline) -> str:
-        msg = "[<{}|{}>] ".format(pipeline.project.web_url, pipeline.project.key)
+        msg = "[<{}|{}>] ".format(
+            pipeline.project.web_url,
+            pipeline.project.key)
         if pipeline.tag:
             msg += "{} tagged {} as {}".format(
                 pipeline.user.name,
-                self.__render_commit_hash(pipeline.project, pipeline.tag.commit),
+                self.__render_commit_hash(
+                    pipeline.project,
+                    pipeline.tag.commit),
                 self.__render_pipeline_link(pipeline),
             )
             if pipeline.tag.message:
@@ -63,7 +67,9 @@ class SlackFormatter:
             )
 
             for commit in pipeline.commits:
-                msg += "\n{} {}".format(self.__render_commit_hash(pipeline.project, commit), commit.title)
+                msg += "\n{} {}".format(
+                    self.__render_commit_hash(
+                        pipeline.project, commit), commit.title)
 
             if not pipeline.commits:
                 msg += "\nNo changes ¯\_(ツ)_/¯"
@@ -88,7 +94,7 @@ class SlackFormatter:
         last_stage = None
         for job in jobs:
             if job.stage != last_stage:
-                if last_stage != None:
+                if last_stage is not None:
                     msg += " "
                 last_stage = job.stage
                 if job.status != 'created' and job.stage in stage_emojis:
@@ -101,7 +107,7 @@ class SlackFormatter:
 
         return msg
 
-    def __render_job_link(self, project: models.Project, job: models.Job, include_name = False) -> str:
+    def __render_job_link(self, project: models.Project, job: models.Job, include_name=False) -> str:
         status = ":gitlab-status-{}:".format(job.status)
         return "<{}|{}>".format(
             self.__job_url(project, job),

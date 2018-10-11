@@ -21,13 +21,15 @@ class GitlabBot:
         try:
             project = self.client.projects.get(request.project_path)
         except gitlab.exceptions.GitlabGetError:
-            msg = "Cannot access project {0}. Please give user @yabeda Reporter permissions here: {1}/{0}/project_members".format(request.project_path, self.url)
+            msg = "Cannot access project {0}. Please give user @yabeda Reporter permissions here: {1}/{0}/project_members".format(
+                request.project_path, self.url)
             raise GitlabError(msg)
 
         try:
             pipeline = project.pipelines.get(request.pipeline_id)
         except gitlab.exceptions.GitlabGetError:
-            msg = "Couldn't find pipeline {0}. Does it exist? {1}/pipelines/{0}".format(request.pipeline_id, project.web_url)
+            msg = "Couldn't find pipeline {0}. Does it exist? {1}/pipelines/{0}".format(
+                request.pipeline_id, project.web_url)
             raise GitlabError(msg)
 
         tag_dto = None
@@ -88,7 +90,8 @@ class GitlabBot:
             return new_pipeline, True
 
     def __get_jobs(self, pipeline) -> models.Jobs:
-        return models.Jobs([models.Job(job.id, job.name, job.stage, job.status) for job in pipeline.jobs.list()])
+        return models.Jobs([models.Job(
+            job.id, job.name, job.stage, job.status) for job in pipeline.jobs.list()])
 
     def refresh_pipeline(self, pipeline: GitlabPipeline) -> GitlabPipeline:
         project = self.client.projects.get(pipeline.dto.project.key)

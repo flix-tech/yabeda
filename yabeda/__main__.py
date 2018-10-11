@@ -46,7 +46,7 @@ swagger = Swagger(app)
 @app.route('/')
 def root():
     return 'Check {} or {} for usage'.format(
-        'https://'+request.host+'/apidocs/',
+        'https://' + request.host + '/apidocs/',
         'https://github.com/flix-tech/yabeda',
     )
 
@@ -101,7 +101,12 @@ def report_pipeline(project_path):
         stage_emojis = stage_emojis_group.get()
         if 'stage_emojis' in request.form:
             pairs = request.form['stage_emojis'].split(',')
-            stage_emojis.update(dict(tuple(pair.split(':', maxsplit=1)) for pair in pairs))
+            stage_emojis.update(
+                dict(
+                    tuple(
+                        pair.split(
+                            ':',
+                            maxsplit=1)) for pair in pairs))
 
         reporter.report_pipeline(models.Request(
             project_path,

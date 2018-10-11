@@ -32,11 +32,15 @@ class SlackBot:
     def __refresh_channel_ids(self):
         self.channel_ids = {}
 
-        response = self.client.api_call("channels.list", exclude_archived=1, exclude_members=1)
+        response = self.client.api_call(
+            "channels.list",
+            exclude_archived=1,
+            exclude_members=1)
         for channel in response["channels"]:
             self.channel_ids[channel["name"]] = channel["id"]
 
-        response = self.client.api_call("groups.list", exclude_archived=1, exclude_members=1)
+        response = self.client.api_call(
+            "groups.list", exclude_archived=1, exclude_members=1)
         for group in response["groups"]:
             self.channel_ids[group["name"]] = group["id"]
 

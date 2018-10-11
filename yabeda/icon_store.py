@@ -24,4 +24,3 @@ class IconStore:
 class Icon(NamedTuple):
     headers: dict
     body: str
-
