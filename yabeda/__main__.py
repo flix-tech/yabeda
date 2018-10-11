@@ -1,7 +1,6 @@
 import os
 import logging
-from flask import Flask, request, make_response
-from flasgger import Swagger
+from flask import request, make_response, Blueprint
 from slackclient import SlackClient
 
 from yabeda import models
@@ -39,19 +38,18 @@ reporter = Reporter(
     slackbot,
 )
 
-app = Flask(__name__)
-swagger = Swagger(app)
+root = Blueprint('root', __name__)
 
 
-@app.route('/')
-def root():
+@root.route('/')
+def index():
     return 'Check {} or {} for usage'.format(
         'https://' + request.host + '/apidocs/',
         'https://github.com/flix-tech/yabeda',
     )
 
 
-@app.route('/ping')
+@root.route('/ping')
 def ping():
     """Readiness probe
     ---
@@ -63,7 +61,7 @@ def ping():
     return 'pong'
 
 
-@app.route('/report/<path:project_path>', methods=['POST'])
+@root.route('/report/<path:project_path>', methods=['POST'])
 def report_pipeline(project_path):
     """Report pipeline
     ---
@@ -124,7 +122,7 @@ def report_pipeline(project_path):
         return "Gitlab Error: {}".format(err), 500
 
 
-@app.route('/icon/<hash>')
+@root.route('/icon/<hash>')
 def icon(hash):
     """Gitlab icon hash
     ---
@@ -145,7 +143,3 @@ def icon(hash):
     resp = make_response(icon.body)
     resp.headers['Content-Type'] = icon.headers['Content-Type']
     return resp
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=YABEDA_DEBUG)
