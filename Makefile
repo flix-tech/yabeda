@@ -9,4 +9,7 @@ run-locally:
 	uwsgi uwsgi.ini
 
 test:
-	pytest
+	python3 -m pytest \
+	--cov=yabeda \
+	--cov-branch \
+	--cov-report=term-missing
