@@ -42,7 +42,7 @@ class Jobs(List[Job]):
 
     def equals(self, jobs) -> bool:
         return self.hash() == jobs.hash()
-    
+
     def with_status(self, status: str) -> 'Jobs':
         return Jobs(filter(lambda job: job.status == status, self))
 

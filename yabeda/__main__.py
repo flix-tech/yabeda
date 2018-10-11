@@ -4,14 +4,14 @@ from flask import Flask, request, make_response
 from flasgger import Swagger
 from slackclient import SlackClient
 
-import models
-from gitlabbot import GitlabBot, GitlabError
-from icon_store import IconStore
-from slack_formatter import SlackFormatter
-from slackbot import SlackBot
-from emoji_store import EmojiStore, EmojiGroup
-from reporter import Reporter
-from logging_filter import PingFilter
+from yabeda import models
+from yabeda.gitlabbot import GitlabBot, GitlabError
+from yabeda.icon_store import IconStore
+from yabeda.slack_formatter import SlackFormatter
+from yabeda.slackbot import SlackBot
+from yabeda.emoji_store import EmojiStore, EmojiGroup
+from yabeda.reporter import Reporter
+from yabeda.logging_filter import PingFilter
 
 YABEDA_TOKEN = os.environ["YABEDA_TOKEN"]
 YABEDA_DEBUG = os.environ.get("YABEDA_DEBUG") == '1'
@@ -96,13 +96,13 @@ def report_pipeline(project_path):
     """
     if request.form.get('token') != YABEDA_TOKEN:
         return 'Invalid token', 401
-    
+
     try:
         stage_emojis = stage_emojis_group.get()
         if 'stage_emojis' in request.form:
             pairs = request.form['stage_emojis'].split(',')
             stage_emojis.update(dict(tuple(pair.split(':', maxsplit=1)) for pair in pairs))
-        
+
         reporter.report_pipeline(models.Request(
             project_path,
             request.form['pipeline_id'],
@@ -134,7 +134,7 @@ def icon(hash):
     """
     if hash not in icon_store.icons:
         return 'Icon not found', 404
-    
+
     icon = icon_store.icons[hash]
 
     resp = make_response(icon.body)
@@ -142,4 +142,5 @@ def icon(hash):
     return resp
 
 
-app.run(host='0.0.0.0', debug=YABEDA_DEBUG)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=YABEDA_DEBUG)

@@ -43,8 +43,8 @@ class SlackBot:
     def __get_channel_id(self, name: str) -> str:
         if name not in self.channel_ids:
             self.__refresh_channel_ids()
-        
+
         if name not in self.channel_ids:
             raise KeyError('Channel "{}" not found'.format(name))
-        
+
         return self.channel_ids[name]

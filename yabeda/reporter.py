@@ -2,11 +2,11 @@ import os
 import logging
 import time
 
-from gitlabbot import GitlabBot
-from icon_store import IconStore
-from slackbot import SlackBot
-from models import Request
-from slack_formatter import SlackFormatter
+from yabeda.gitlabbot import GitlabBot
+from yabeda.icon_store import IconStore
+from yabeda.slackbot import SlackBot
+from yabeda.models import Request
+from yabeda.slack_formatter import SlackFormatter
 
 
 class Reporter:
@@ -41,7 +41,7 @@ class Reporter:
                         delay = self.MIN_DELAY
                     else:
                         delay = min(delay*2, 60)
-                
+
                 pipeline = self.gitlab.refresh_pipeline(pipeline)
                 self.slack.update_report(request.channel, ts, self.formatter.format(request, pipeline.dto))
 

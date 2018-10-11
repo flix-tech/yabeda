@@ -1,7 +1,7 @@
 from typing import NamedTuple
 import gitlab
 
-import models
+from yabeda import models
 
 
 class GitlabPipeline(NamedTuple):
@@ -23,7 +23,7 @@ class GitlabBot:
         except gitlab.exceptions.GitlabGetError:
             msg = "Cannot access project {0}. Please give user @yabeda Reporter permissions here: {1}/{0}/project_members".format(request.project_path, self.url)
             raise GitlabError(msg)
-        
+
         try:
             pipeline = project.pipelines.get(request.pipeline_id)
         except gitlab.exceptions.GitlabGetError:
@@ -39,7 +39,7 @@ class GitlabBot:
                 tag.message,
                 tag.release.get('description') if tag.release else None,
             )
-        
+
         commits_dto = []
         if not pipeline.tag and pipeline.before_sha != '0000000000000000000000000000000000000000':
             commits = project.commits.list(ref_name=pipeline.ref)
@@ -52,7 +52,7 @@ class GitlabBot:
                 if started:
                     commits_dto.append(self.__create_commit(commit.attributes))
             commits_dto.reverse()
-        
+
         return GitlabPipeline(
             pipeline,
             models.Pipeline(
@@ -70,7 +70,7 @@ class GitlabBot:
                 self.__get_jobs(pipeline)
             )
         )
-    
+
     def __create_commit(self, commit) -> models.Commit:
         return models.Commit(
             commit["id"],
@@ -78,7 +78,7 @@ class GitlabBot:
             commit["title"],
             models.User(commit["author_name"])
         )
-    
+
     def refresh_pipeline_jobs(self, pipeline: GitlabPipeline):
         new_jobs = self.__get_jobs(pipeline.api)
         if new_jobs.equals(pipeline.dto.jobs):
@@ -86,7 +86,7 @@ class GitlabBot:
         else:
             new_pipeline = pipeline.replace_dto(jobs=new_jobs)
             return new_pipeline, True
-    
+
     def __get_jobs(self, pipeline) -> models.Jobs:
         return models.Jobs([models.Job(job.id, job.name, job.stage, job.status) for job in pipeline.jobs.list()])
 

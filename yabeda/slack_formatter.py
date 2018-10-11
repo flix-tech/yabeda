@@ -3,7 +3,7 @@ import ciso8601
 from dateutil import tz
 from typing import Dict
 
-import models
+from yabeda import models
 
 
 class SlackFormatter:
@@ -11,7 +11,7 @@ class SlackFormatter:
         "success": "good",
         "failed": "danger",
     }
-    
+
     def format(self, request: models.Request, pipeline: models.Pipeline) -> dict:
         attachments = []
         color = self.colors_map[pipeline.status] if pipeline.status in self.colors_map else None
@@ -68,7 +68,7 @@ class SlackFormatter:
             if not pipeline.commits:
                 msg += "\nNo changes ¯\_(ツ)_/¯"
         return msg
-    
+
     def __render_commit_hash(self, project: models.Project, commit: models.Commit) -> str:
         return "`<{}/commit/{}|{}>`".format(
             project.web_url,
@@ -82,7 +82,7 @@ class SlackFormatter:
             pipeline.id,
             pipeline.ref,
         )
-    
+
     def __render_jobs_progress_bar(self, project: models.Project, jobs: models.Jobs, stage_emojis: Dict[str, str]) -> str:
         msg = ""
         last_stage = None
@@ -94,31 +94,31 @@ class SlackFormatter:
                 if job.status != 'created' and job.stage in stage_emojis:
                     msg += ":{}::".format(stage_emojis[job.stage])
             msg += self.__render_job_link(project, job)
-        
+
         # Copy failed jobs to separate lines
         for job in jobs.with_status('failed'):
             msg += "\n" + self.__render_job_link(project, job, True)
 
         return msg
-    
+
     def __render_job_link(self, project: models.Project, job: models.Job, include_name = False) -> str:
         status = ":gitlab-status-{}:".format(job.status)
         return "<{}|{}>".format(
             self.__job_url(project, job),
             "{} {}".format(status, job.name) if include_name else status,
         )
-    
+
     def __job_url(self, project: models.Project, job: models.Job) -> str:
         return "{}/-/jobs/{}".format(project.web_url, job.id)
-    
+
     def __pipeline_status_footer(self, pipeline: models.Pipeline) -> dict:
         if not pipeline.status or not pipeline.duration or not pipeline.finished_at:
             return {}
-        
+
         ts = ciso8601.parse_datetime(pipeline.finished_at)
         ts = ts.replace(tzinfo=tz.tzutc()).astimezone(tz.tzlocal())
         return {
-            # "footer_icon": 
+            # "footer_icon":
             "footer": "{} in {} min {} sec".format(
                 pipeline.status.title(),
                 int(pipeline.duration / 60),
