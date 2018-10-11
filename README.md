@@ -1,6 +1,9 @@
 # yabeda
 
+
 A tool that sends deployment notifications from Gitlab CI to Slack.
+
+[![Build Status](https://travis-ci.org/flix-tech/yabeda.svg?branch=master)](https://travis-ci.org/flix-tech/yabeda)
 
 
 ## How to install yabeda service
@@ -44,7 +47,7 @@ Replace `random` with your slack channel name, `https://my-yabeda-host.test` wit
 You can also call yabeda with any http client like curl:
 ```
 curl -X POST -d "channel=random&pipeline_id=${CI_PIPELINE_ID}&token=${YABEDA_TOKEN}" "https://my-yabeda-host.test/report/$CI_PROJECT_PATH"
-``` 
+```
 
 ## To run locally
 
