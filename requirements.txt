@@ -1,4 +1,4 @@
-flask==0.12.*
+flask==1.0.2
 flasgger==0.8.*
 slackclient==1.2.*
 python-gitlab==1.3.*
