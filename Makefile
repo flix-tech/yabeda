@@ -8,3 +8,6 @@ install:
 run-locally:
 	export PYTHONPATH=$(pwd)
 	python3 -m yabeda
+
+test:
+	pytest
