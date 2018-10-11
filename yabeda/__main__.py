@@ -4,6 +4,7 @@ from flask import request, make_response, Blueprint
 from slackclient import SlackClient
 
 from yabeda import models
+from yabeda import config
 from yabeda.gitlabbot import GitlabBot, GitlabError
 from yabeda.icon_store import IconStore
 from yabeda.slack_formatter import SlackFormatter
@@ -12,12 +13,12 @@ from yabeda.emoji_store import EmojiStore, EmojiGroup
 from yabeda.reporter import Reporter
 from yabeda.logging_filter import PingFilter
 
-YABEDA_TOKEN = os.environ["YABEDA_TOKEN"]
-YABEDA_DEBUG = os.environ.get("YABEDA_DEBUG") == '1'
-SLACK_BOT_TOKEN = os.environ["SLACK_BOT_TOKEN"]
-SLACK_OAUTH_TOKEN = os.environ["SLACK_OAUTH_TOKEN"]
-GITLAB_URL = os.environ["GITLAB_URL"]
-GITLAB_BOT_TOKEN = os.environ["GITLAB_BOT_TOKEN"]
+YABEDA_TOKEN = config.YABEDA_TOKEN
+YABEDA_DEBUG = config.YABEDA_DEBUG
+SLACK_BOT_TOKEN = config.SLACK_BOT_TOKEN
+SLACK_OAUTH_TOKEN = config.SLACK_OAUTH_TOKEN
+GITLAB_URL = config.GITLAB_URL
+GITLAB_BOT_TOKEN = config.GITLAB_BOT_TOKEN
 
 logging.basicConfig(
     format='[%(asctime)s] %(levelname)s: %(message)s',
