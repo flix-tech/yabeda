@@ -1,13 +1,14 @@
 # Config file for automatic testing at travis-ci.org
 sudo: false  # http://docs.travis-ci.com/user/migrating-from-legacy/
 env:
-  - DB=postgres
-  - YABEDA_TOKEN=test
-  - YABEDA_DEBUG=test
-  - SLACK_BOT_TOKEN=test
-  - SLACK_OAUTH_TOKEN=test
-  - GITLAB_URL=test
-  - GITLAB_BOT_TOKEN=test
+  global:
+    - DB=postgres
+    - YABEDA_TOKEN=test
+    - YABEDA_DEBUG=test
+    - SLACK_BOT_TOKEN=test
+    - SLACK_OAUTH_TOKEN=test
+    - GITLAB_URL=test
+    - GITLAB_BOT_TOKEN=test
 language: python
 python:
   - 3.6
