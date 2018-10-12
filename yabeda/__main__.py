@@ -80,8 +80,8 @@ def report_pipeline(project_path):
         type: string
         required: true
       - in: formData
-        name: stages
-        description: Stage emojis.
+        name: stage_emojis
+        description: Stage emojis to override global configuration. Comma-separated list of rules in "stage:emoji" format.
         type: string
         example: build:building_construction,test=:crossed_fingers
         required: false
