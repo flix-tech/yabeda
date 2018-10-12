@@ -10,7 +10,23 @@ A tool that sends deployment notifications from Gitlab CI to Slack.
 
 ### Getting access to GitLab
 
-TBD
+To allow yabeda get pipeline info from GitLab you need to provide access token with "api" scope for any GitLab user.
+Because "api" scope provides too much access, it's better to create a separate user with limited permissions.
+
+Assuming you have self-hosted GitLab instance and access to admin panel:
+1. Open `/admin/users/new` page in you Gitlab
+2. Create user:
+    * Name - "Yabeda"
+    * Username - "yabeda"
+    * Email - provide any email address you have
+    * Access level - "Regular"
+    * External - check. This will allow yabeda to see only project where access was explicitly granted.
+    * Upload [yabeda logo][yabeda logo url] as avatar.
+    * Push "Create user" button
+3. Open "Impersonation Tokens" page. Url would look like `/admin/users/yabeda/impersonation_tokens`.
+4. Create impersonation token with "api" scope. 
+
+Save token. You'll need to provide it in yabeda configuration.
 
 ### Getting access to Slack
 
@@ -22,7 +38,7 @@ You have to create your own slack app so only your instances of yabeda can post 
     * App Name - "Yabeda"
     * Development Slack Workspace - your workspace name
     * Push "Create App" button
-4. Now you're on "Basic Information" page where you need to upload app icon. We've got an icon for you, here it is: [Yabeda logo](https://raw.githubusercontent.com/flix-tech/yabeda/master/static/icons/logo.png).
+4. Now you're on "Basic Information" page where you need to upload app icon. We've got an icon for you, here it is: [Yabeda logo][yabeda logo url].
 5. It's time to create a bot user:
     * Open page "Features > Bot Users"
     * Click on "Add a Bot User" button
@@ -44,12 +60,12 @@ TBD
 
 ## Hot to enable yabeda reporting for your gitlab project
 
-1. Add yabeda user as reporter to your gitlab project.
+1. Add yabeda user as "Reporter" member to your gitlab project.
 2. If you want to send notifications to private channel - invite yabeda bot to this channel.
 3. Get yabeda token - same as token you used when installing yabeda app.
 4. Add this query to your gitlab CI pipeline:
 
-```
+```yaml
 yabeda:
   stage: build
   image: alpine
@@ -78,3 +94,5 @@ You can create a virtualenv with `python3 -m venv .venv` and `source .venv/bin/a
 
     make install
     make run-locally
+
+[yabeda logo url]: https://raw.githubusercontent.com/flix-tech/yabeda/master/static/icons/logo.png
