@@ -1,0 +1,5 @@
+/docker
+/tests
+/venv
+/.travis.yml
+/secrets.env
