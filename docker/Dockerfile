@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 
 RUN apk --no-cache add make gcc musl-dev linux-headers alpine-sdk pcre-dev
 
-COPY ../Makefile /usr/src/app/
+COPY Makefile /usr/src/app/
 COPY requirements.txt /usr/src/app/
 RUN make install
 
