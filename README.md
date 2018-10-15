@@ -8,6 +8,8 @@ A tool that sends deployment notifications from Gitlab CI to Slack.
 
 ## How to install yabeda service
 
+**Warning:** documentation not finished.
+
 ### Getting access to GitLab
 
 To allow yabeda get pipeline info from GitLab you need to provide access token with "api" scope for any GitLab user.
