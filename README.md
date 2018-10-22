@@ -1,14 +1,11 @@
 # yabeda
 
-
-A tool that sends deployment notifications from Gitlab CI to Slack.
+Yabeda is a tool that gets information about pipelines from GitLab CI and sends it to Slack as pretty messages to. You can call it from your deployment pipelines to get detailed deployment notifications.
 
 [![Build Status](https://travis-ci.org/flix-tech/yabeda.svg?branch=master)](https://travis-ci.org/flix-tech/yabeda)
 
 
 ## How to install yabeda service
-
-**Warning:** documentation not finished.
 
 ### Getting access to GitLab
 
@@ -58,7 +55,22 @@ After installing app to your workspace you'll see two tokens: "OAuth Access Toke
 
 ### Installing yabeda app
 
-TBD
+1. Install docker image following instructions on [Docker Hub](https://hub.docker.com/r/flixtech/yabeda/) or in [docker directory README](https://github.com/flix-tech/yabeda/tree/master/docker).
+
+2. Add these emojis to your Slack workspace:
+
+   * `:yabeda-pending-stage:` - ![:yabeda-pending-stage:](https://github.com/flix-tech/yabeda/raw/master/static/icons/pending-stage.png)
+
+   * `:gitlab-status-canceled:` - ![:**gitlab-status-canceled**:](https://github.com/flix-tech/yabeda/raw/master/static/icons/status-canceled.png)
+
+   * `:gitlab-status-created:` - ![:**gitlab-status-created**:](https://github.com/flix-tech/yabeda/raw/master/static/icons/status-created.png)
+   * `:gitlab-status-failed:` - ![:**gitlab-status-failed**:](https://github.com/flix-tech/yabeda/raw/master/static/icons/status-failed.png)
+   * `:gitlab-status-manual:` - ![:**gitlab-status-manual**:](https://github.com/flix-tech/yabeda/raw/master/static/icons/status-manual.png)
+   * `:gitlab-status-pending:` - ![:**gitlab-status-pending**:](https://github.com/flix-tech/yabeda/raw/master/static/icons/status-pending.png)
+   * `:gitlab-status-running:` - ![:**gitlab-status-running**:](https://github.com/flix-tech/yabeda/raw/master/static/icons/status-running.png)
+   * `:gitlab-status-skipped:` - ![:**gitlab-status-skipped**:](https://github.com/flix-tech/yabeda/raw/master/static/icons/status-skipped.png)
+   * `:gitlab-status-success:` - ![:**gitlab-status-success**:](https://github.com/flix-tech/yabeda/raw/master/static/icons/status-success.png)
+   * `:gitlab-status-warning:` - ![:**gitlab-status-warning**:](https://github.com/flix-tech/yabeda/raw/master/static/icons/status-warning.png)
 
 ## Hot to enable yabeda reporting for your gitlab project
 
