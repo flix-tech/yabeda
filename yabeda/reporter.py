@@ -25,38 +25,39 @@ class Reporter:
             request.pipeline_id,
             request.channel)
 
-        pipeline = self.gitlab.get_pipeline_report(request)
-        if pipeline.dto.project.icon_url:
-            hash = self.icon_store.store(pipeline.dto.project.icon_url)
-            pipeline = pipeline.replace_dto(project=pipeline.dto.project._replace(
+        report_input = self.gitlab.create_input(request)
+        pipeline = report_input.get_report()
+        if pipeline.project.icon_url:
+            hash = self.icon_store.store(pipeline.project.icon_url)
+            pipeline = pipeline._replace(project=pipeline.project._replace(
                 icon_url='https://{}/icon/{}'.format(request.host, hash)))
             logging.info(
                 "{} project icon is {}".format(
-                    pipeline.dto.project.key,
-                    pipeline.dto.project.icon_url))
+                    pipeline.project.key,
+                    pipeline.project.icon_url))
         ts = self.slack.send_report(
             request.channel, self.formatter.format(
-                request, pipeline.dto))
+                request, pipeline))
 
         if os.fork() == 0:
             try:
                 delay = self.MIN_DELAY
-                while not pipeline.dto.is_finished():
+                while not pipeline.is_finished():
                     time.sleep(delay)
-                    pipeline, updated = self.gitlab.refresh_pipeline_jobs(
+                    pipeline, updated = report_input.refresh_pipeline_jobs(
                         pipeline)
                     if updated:
                         self.slack.update_report(
                             request.channel, ts, self.formatter.format(
-                                request, pipeline.dto))
+                                request, pipeline))
                         delay = self.MIN_DELAY
                     else:
                         delay = min(delay * 2, 60)
 
-                pipeline = self.gitlab.refresh_pipeline(pipeline)
+                pipeline = report_input.refresh_pipeline(pipeline)
                 self.slack.update_report(
                     request.channel, ts, self.formatter.format(
-                        request, pipeline.dto))
+                        request, pipeline))
 
             except BaseException as error:
                 logging.error('An exception occurred: {}'.format(error))
