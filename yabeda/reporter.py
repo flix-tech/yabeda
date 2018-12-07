@@ -61,4 +61,5 @@ class Reporter:
 
             except BaseException as error:
                 logging.error('An exception occurred: {}'.format(error))
-                raise error
+
+            exit()
