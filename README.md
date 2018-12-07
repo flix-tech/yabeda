@@ -2,6 +2,8 @@
 
 Yabeda is a tool that gets information about pipelines from GitLab CI and sends it to Slack as pretty messages to. You can call it from your deployment pipelines to get detailed deployment notifications.
 
+![screenshot](https://github.com/flix-tech/yabeda/raw/master/static/screenshot.png)
+
 [![Build Status](https://travis-ci.org/flix-tech/yabeda.svg?branch=master)](https://travis-ci.org/flix-tech/yabeda)
 
 
